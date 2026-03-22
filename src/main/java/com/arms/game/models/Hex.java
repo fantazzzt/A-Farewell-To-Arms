@@ -11,7 +11,8 @@ public class Hex {
     @Getter
     private final Terrain terrain;
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private List<Unit> units;
 
 
@@ -21,7 +22,7 @@ public class Hex {
     }
 
     // TODO: Make terrain a builder where you can have a base terrain and add on trench, VPs etc
-    public enum Terrain{
+    public enum Terrain {
         GRASSLAND(0);
 
         @Getter

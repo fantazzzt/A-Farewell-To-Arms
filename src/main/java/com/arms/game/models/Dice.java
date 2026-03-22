@@ -14,7 +14,7 @@ public class Dice {
         private final int dieKind;
     }
 
-    public int roll(){
+    public int roll() {
         return -1;
     }
 }

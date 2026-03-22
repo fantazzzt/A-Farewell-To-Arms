@@ -5,11 +5,11 @@ import java.util.List;
 public class UnitStack {
     public List<Unit> unitList;
 
-    public void move(){
+    public void move() {
         // TODO
     }
 
-    public void attack(){
+    public void attack() {
         // TODO
     }
 
