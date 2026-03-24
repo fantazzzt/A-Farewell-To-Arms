@@ -1,5 +1,7 @@
 package com.arms.game.models;
 
+import com.arms.game.models.squares.Unit;
+
 import java.util.List;
 
 public class UnitStack {

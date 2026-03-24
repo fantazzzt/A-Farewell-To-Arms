@@ -1,5 +1,6 @@
 package com.arms.game.models;
 
+import com.arms.game.models.squares.Unit;
 import lombok.Getter;
 import lombok.Setter;
 
