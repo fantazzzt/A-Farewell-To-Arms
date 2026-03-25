@@ -1,4 +1,4 @@
-package com.arms.game.models;
+package com.arms.game.models.map;
 
 import com.arms.game.models.squares.Unit;
 import lombok.Getter;

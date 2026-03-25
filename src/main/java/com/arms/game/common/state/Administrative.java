@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class Administrative {
+public final class Administrative implements GameState {
 }

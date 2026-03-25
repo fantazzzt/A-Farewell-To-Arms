@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class GameOver {
+public final class GameOver implements GameState {
 }

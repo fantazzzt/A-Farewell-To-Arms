@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class Movement {
+public final class Movement implements GameState {
 }

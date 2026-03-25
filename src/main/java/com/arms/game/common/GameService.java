@@ -1,5 +1,6 @@
 package com.arms.game.common;
 
+import com.arms.game.models.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public class GameService {
 
     private Game currentGame;
 
-    public void startGame(List<String> playerNames) {
+    public void startGame(List<Player> players) {
         GameBuilder builder = GameBuilder.initializeGame();
-        playerNames.forEach(builder::addPlayer);
+        players.forEach(builder::addPlayer);
         this.currentGame = builder.startGame();
     }
 

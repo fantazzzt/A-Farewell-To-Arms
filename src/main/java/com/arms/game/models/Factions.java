@@ -1,5 +1,5 @@
 package com.arms.game.models;
 
-public enum Factions {
+public enum Faction {
     ITALY, AUSTRIA;
 }

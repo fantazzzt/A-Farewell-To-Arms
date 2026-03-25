@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class Weather {
+public final class Weather implements GameState {
 }

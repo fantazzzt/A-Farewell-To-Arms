@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class Operation {
+public final class Operation implements GameState {
 }

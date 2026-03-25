@@ -1,6 +1,4 @@
-package com.arms.game.models;
-
-import com.arms.game.models.squares.Unit;
+package com.arms.game.models.squares;
 
 import java.util.List;
 

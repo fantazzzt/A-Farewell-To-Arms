@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class Start {
+public final class Start implements GameState {
 }

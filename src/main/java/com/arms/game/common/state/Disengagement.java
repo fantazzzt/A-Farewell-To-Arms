@@ -1,4 +1,4 @@
 package com.arms.game.common.state;
 
-public class Disengagement {
+public final class Disengagement implements GameState {
 }
