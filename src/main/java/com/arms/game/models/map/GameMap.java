@@ -10,5 +10,6 @@ public class GameMap {
     private int totalGridSize;
     private HashMap<HexCoordinate, Hex> hexMap;
 
-    public GameMap(){}
+    public GameMap() {
+    }
 }

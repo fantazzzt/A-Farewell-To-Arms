@@ -1,6 +1,5 @@
 package com.arms.game.common;
 
-import com.arms.game.models.Faction;
 import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
 import lombok.NonNull;
@@ -59,6 +58,6 @@ public class GameBuilder {
         if (playerList.size() < MIN_NUM_PLAYERS) {
             throw new IllegalStateException("Not enough players in the game! Need at least " + MIN_NUM_PLAYERS + "players");
         }
-        return new Game(playerList, null,0,null,null);
+        return new Game(playerList, null, 0, null, null);
     }
 }
