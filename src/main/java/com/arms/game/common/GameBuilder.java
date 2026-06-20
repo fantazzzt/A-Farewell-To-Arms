@@ -40,8 +40,8 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder addScenario(@NonNull GameMap map) {
-        gameMap = map;
+    public GameBuilder addScenario(@NonNull String map) {
+        gameMap = MapLoader.readGameMap(map);
         return this;
     }
 

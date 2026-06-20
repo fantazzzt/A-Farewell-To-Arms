@@ -8,12 +8,14 @@ public abstract class Unit {
     // Tokens have two sides. The front side is the full value of that token.
     // The second side is the step loss side. Hence two of each value
     public final UnitRank rank;
+    public final boolean stepLoss;
     public final Pair<Integer, Integer> attack;
     public final Pair<Integer, Integer> defense;
     public final Pair<Integer, Integer> movement;
 
-    protected Unit(UnitRank rank, Pair<Integer, Integer> attack, Pair<Integer, Integer> defense, Pair<Integer, Integer> movement) {
+    protected Unit(UnitRank rank, boolean stepLoss, Pair<Integer, Integer> attack, Pair<Integer, Integer> defense, Pair<Integer, Integer> movement) {
         this.rank = rank;
+        this.stepLoss = stepLoss;
         this.attack = attack;
         this.defense = defense;
         this.movement = movement;
