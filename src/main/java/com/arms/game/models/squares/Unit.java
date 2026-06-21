@@ -12,6 +12,7 @@ public abstract class Unit {
     public final Pair<Integer, Integer> attack;
     public final Pair<Integer, Integer> defense;
     public final Pair<Integer, Integer> movement;
+    public final boolean hasMoved = false;
 
     protected Unit(UnitRank rank, boolean stepLoss, Pair<Integer, Integer> attack, Pair<Integer, Integer> defense, Pair<Integer, Integer> movement) {
         this.rank = rank;
