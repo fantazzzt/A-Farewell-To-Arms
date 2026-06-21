@@ -1,5 +1,6 @@
 package com.arms.game.common;
 
+import com.arms.game.common.state.Administrative;
 import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
 import lombok.NonNull;
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class GameBuilder {
     private static final int MIN_NUM_PLAYERS = 2;
     private static final int MAX_NUM_PLAYERS = 2;
-    private final List<Player> playerList;
+    private  List<Player> playerList;
     private GameMap gameMap;
 
     private GameBuilder() {
@@ -46,7 +47,7 @@ public class GameBuilder {
     }
 
     public GameBuilder removePlayer(@NonNull String playerName) {
-        playerList.remove(playerName);
+        playerList = playerList.stream().filter(player -> Objects.equals(player.name, playerName)).toList();
         return this;
     }
 
@@ -58,6 +59,6 @@ public class GameBuilder {
         if (playerList.size() < MIN_NUM_PLAYERS) {
             throw new IllegalStateException("Not enough players in the game! Need at least " + MIN_NUM_PLAYERS + "players");
         }
-        return new Game(playerList, null, 0, null, null);
+        return new Game(playerList, gameMap.getOperationStartingDay(), 0, new Administrative(), gameMap);
     }
 }

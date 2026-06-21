@@ -11,18 +11,21 @@ public class UnitStack {
 
     public void move(HexCoordinate hexCoordinate) {
         if (!unitList.isEmpty()) {
+            boolean hasMovedAny =  unitList.stream().anyMatch(unit -> unit.hasMoved);
+            if (hasMovedAny){
+                return;
+            }
+
             int maxTileMovement = 0;
             maxTileMovement = unitList.stream()
                     .map(unit -> unit.stepLoss ? unit.movement.second() : unit.movement.first())
                     .max(Comparator.comparing(Integer::valueOf))
                     .get();
 
-            // TODO Move to desired coordinate location; probably need validators, move will be complicated
-
             int distance = calculateHexDistance(hexCoordinate, currentLocation);
 
-            // TODO how do we check if distance has already been spent?
             if (distance <= maxTileMovement){
+                this.currentLocation = hexCoordinate;
             }
 
         }
@@ -40,7 +43,9 @@ public class UnitStack {
             return 0;
         }
 
-        int topSum = Math.abs(hexOne.q() - hexTwo.q()) + Math.abs(hexOne.r() - hexTwo.r()) + Math.abs(hexOne.q() - hexOne.r() - hexTwo.q() - hexTwo.r());
+        int topSum = Math.abs(hexOne.q() - hexTwo.q()) +
+                Math.abs(hexOne.r() - hexTwo.r()) +
+                Math.abs(hexOne.q() + hexOne.r() - hexTwo.q() - hexTwo.r());
         int divisor = 2;
         return topSum / divisor;
     }
