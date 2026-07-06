@@ -3,18 +3,18 @@ package com.arms.game.models;
 import lombok.Getter;
 
 public class Dice {
-    public enum DiceKind {
+    public enum DiceType {
         NORMAL(0), GERMAN(1), ITALIAN(3);
 
-        private DiceKind(int i) {
-            this.dieKind = i;
+        private DiceType(int i) {
+            this.dieType = i;
         }
 
         @Getter
-        private final int dieKind;
+        private final int dieType;
     }
 
-    public int roll() {
-        return -1;
+    public static int roll() {
+        return (int)(Math.random() * 6) + 1;
     }
 }

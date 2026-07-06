@@ -5,6 +5,7 @@ import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
 import lombok.NonNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,13 +42,13 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder addScenario(@NonNull String map) {
+    public GameBuilder addScenario(@NonNull String map) throws IOException {
         gameMap = MapLoader.readGameMap(map);
         return this;
     }
 
     public GameBuilder removePlayer(@NonNull String playerName) {
-        playerList = playerList.stream().filter(player -> Objects.equals(player.name, playerName)).toList();
+        playerList = playerList.stream().filter(player -> !Objects.equals(player.name, playerName)).toList();
         return this;
     }
 

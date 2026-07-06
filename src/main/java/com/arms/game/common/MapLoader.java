@@ -4,6 +4,8 @@ import com.arms.game.models.map.GameMap;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Helper class for loading the maps into Java objects. The maps specify the scenario. For example,
@@ -17,7 +19,7 @@ public class MapLoader {
     private MapLoader() {
     }
 
-    public static GameMap readGameMap(String filePath) {
+    public static GameMap readGameMap(String filePath) throws IOException {
         File file = new File(filePath);
         return mapper.readValue(file, GameMap.class);
     }
