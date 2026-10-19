@@ -3,6 +3,7 @@ package com.arms.game.common;
 import com.arms.game.models.map.GameMap;
 import com.arms.game.models.map.Hex;
 import com.arms.game.models.map.HexCoordinate;
+import com.arms.game.models.map.Reinforcement;
 import com.arms.game.models.squares.AttackUnit;
 import com.arms.game.models.squares.Unit;
 import tools.jackson.databind.ObjectMapper;
@@ -19,6 +20,8 @@ import java.util.Map;
  * rules that are specific to the map.
  */
 public class MapLoader {
+
+    private static final int DEFAULT_VP_THRESHOLD = 5;
 
     public static final ObjectMapper mapper = new ObjectMapper();
 
@@ -58,8 +61,15 @@ public class MapLoader {
         List<HexCoordinate> objectives = def.objectives().stream()
                 .map(o -> HexCoordinate.of(o.q(), o.r()))
                 .toList();
+        List<Reinforcement> reinforcements = def.reinforcements() == null ? List.<Reinforcement>of()
+                : def.reinforcements().stream()
+                .map(r -> new Reinforcement(r.turn(), r.sequence(), toUnit(r.unit()),
+                        HexCoordinate.of(r.unit().q(), r.unit().r())))
+                .toList();
         return new GameMap(def.name(), def.initiative(), def.firstTurn(), def.lastTurn(), hexes, objectives,
-                def.offensiveTurns() == null ? List.of() : def.offensiveTurns());
+                def.offensiveTurns() == null ? List.of() : def.offensiveTurns(),
+                def.vpThreshold() == null ? DEFAULT_VP_THRESHOLD : def.vpThreshold(),
+                reinforcements);
     }
 
     private static Unit toUnit(ScenarioDefinition.UnitDef u) {

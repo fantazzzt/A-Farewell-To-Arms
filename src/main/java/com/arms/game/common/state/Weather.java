@@ -8,7 +8,7 @@ import com.arms.game.common.Game;
 public final class Weather implements GameState {
     @Override
     public GameState advance(Game game) {
-        game.resetMovement();
+        game.beginMovementPhase();
         return new Movement();
     }
 }

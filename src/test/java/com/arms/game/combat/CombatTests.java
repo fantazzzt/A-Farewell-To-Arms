@@ -38,7 +38,7 @@ class CombatTests {
     }
 
     private void rebuild() {
-        map = new GameMap("test", Faction.CENTRAL, 1, 1, hexes, List.of(), List.of());
+        map = new GameMap("test", Faction.CENTRAL, 1, 1, hexes, List.of(), List.of(), 5, List.of());
     }
 
     private static Unit unit(String id, Faction faction, Unit.UnitRank rank, int morale, int attack, int defense) {

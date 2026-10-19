@@ -1,37 +1,295 @@
 {
-  "_comment": "INFERRED PLACEHOLDER SETUP. Hex layout, terrain and unit stats are invented until we have the real map and setup aid.",
-  "name": "Monte Grappa: The Sacred Mountain",
-  "initiative": "CENTRAL",
-  "firstTurn": 17,
-  "lastTurn": 18,
-  "offensiveTurns": [17],
-  "hexes": [
-    {"q": 0, "r": 0, "terrain": "CLEAR"},
-    {"q": 1, "r": 0, "terrain": "CLEAR"},
-    {"q": 2, "r": 0, "terrain": "FOREST"},
-    {"q": 3, "r": 0, "terrain": "MOUNTAIN", "trench": true},
-    {"q": 4, "r": 0, "terrain": "MOUNTAIN", "trench": true},
-    {"q": 0, "r": 1, "terrain": "CLEAR"},
-    {"q": 1, "r": 1, "terrain": "FOREST"},
-    {"q": 2, "r": 1, "terrain": "MOUNTAIN"},
-    {"q": 3, "r": 1, "terrain": "HIGH_MOUNTAIN", "trench": true},
-    {"q": 4, "r": 1, "terrain": "MOUNTAIN"},
-    {"q": -1, "r": 2, "terrain": "CLEAR"},
-    {"q": 0, "r": 2, "terrain": "FOREST"},
-    {"q": 1, "r": 2, "terrain": "MOUNTAIN"},
-    {"q": 2, "r": 2, "terrain": "HIGH_MOUNTAIN"},
-    {"q": 3, "r": 2, "terrain": "MOUNTAIN"}
-  ],
-  "objectives": [
-    {"q": 3, "r": 1},
-    {"q": 4, "r": 1}
-  ],
-  "units": [
-    {"id": "50 ID AH", "faction": "CENTRAL", "rank": "DIVISION", "morale": 4,
-     "attack": [8, 4], "defense": [9, 5], "movement": [4, 4], "q": 0, "r": 0},
-    {"id": "1 Alpini", "faction": "ENTENTE", "rank": "REGIMENT", "morale": 5,
-     "attack": [5, 3], "defense": [6, 3], "movement": [4, 4], "q": 3, "r": 0},
-    {"id": "23 DI", "faction": "ENTENTE", "rank": "DIVISION", "morale": 4,
-     "attack": [9, 4], "defense": [11, 5], "movement": [4, 4], "q": 3, "r": 1}
-  ]
+ "_comment": "INFERRED PLACEHOLDER SETUP. Hex layout, terrain and unit stats are invented until we have the real map and setup aid. 23 DI stats are from the rulebook's counter example.",
+ "name": "Monte Grappa: The Sacred Mountain",
+ "initiative": "CENTRAL",
+ "firstTurn": 17,
+ "lastTurn": 18,
+ "offensiveTurns": [
+  17
+ ],
+ "vpThreshold": 2,
+ "objectives": [
+  {
+   "q": 4,
+   "r": 1
+  },
+  {
+   "q": 4,
+   "r": 2
+  }
+ ],
+ "hexes": [
+  {
+   "q": 0,
+   "r": 0,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 1,
+   "r": 0,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 2,
+   "r": 0,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 3,
+   "r": 0,
+   "terrain": "FOREST",
+   "trench": true
+  },
+  {
+   "q": 4,
+   "r": 0,
+   "terrain": "MOUNTAIN"
+  },
+  {
+   "q": 5,
+   "r": 0,
+   "terrain": "HIGH_MOUNTAIN"
+  },
+  {
+   "q": 0,
+   "r": 1,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 1,
+   "r": 1,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 2,
+   "r": 1,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 3,
+   "r": 1,
+   "terrain": "FOREST",
+   "trench": true
+  },
+  {
+   "q": 4,
+   "r": 1,
+   "terrain": "MOUNTAIN"
+  },
+  {
+   "q": 5,
+   "r": 1,
+   "terrain": "HIGH_MOUNTAIN"
+  },
+  {
+   "q": 0,
+   "r": 2,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 1,
+   "r": 2,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 2,
+   "r": 2,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 3,
+   "r": 2,
+   "terrain": "FOREST",
+   "trench": true
+  },
+  {
+   "q": 4,
+   "r": 2,
+   "terrain": "MOUNTAIN"
+  },
+  {
+   "q": 5,
+   "r": 2,
+   "terrain": "HIGH_MOUNTAIN"
+  },
+  {
+   "q": 0,
+   "r": 3,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 1,
+   "r": 3,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 2,
+   "r": 3,
+   "terrain": "CLEAR"
+  },
+  {
+   "q": 3,
+   "r": 3,
+   "terrain": "FOREST",
+   "trench": true
+  },
+  {
+   "q": 4,
+   "r": 3,
+   "terrain": "MOUNTAIN"
+  },
+  {
+   "q": 5,
+   "r": 3,
+   "terrain": "HIGH_MOUNTAIN"
+  }
+ ],
+ "units": [
+  {
+   "id": "4 ID AH",
+   "faction": "CENTRAL",
+   "rank": "DIVISION",
+   "morale": 4,
+   "attack": [
+    9,
+    4
+   ],
+   "defense": [
+    8,
+    4
+   ],
+   "movement": [
+    4,
+    4
+   ],
+   "q": 0,
+   "r": 1
+  },
+  {
+   "id": "13 SchD AH",
+   "faction": "CENTRAL",
+   "rank": "DIVISION",
+   "morale": 4,
+   "attack": [
+    8,
+    4
+   ],
+   "defense": [
+    9,
+    5
+   ],
+   "movement": [
+    4,
+    4
+   ],
+   "q": 0,
+   "r": 2
+  },
+  {
+   "id": "Alpenkorps",
+   "faction": "CENTRAL",
+   "rank": "REGIMENT",
+   "morale": 5,
+   "attack": [
+    6,
+    3
+   ],
+   "defense": [
+    6,
+    3
+   ],
+   "movement": [
+    4,
+    4
+   ],
+   "q": 1,
+   "r": 2
+  },
+  {
+   "id": "1 Alpini",
+   "faction": "ENTENTE",
+   "rank": "REGIMENT",
+   "morale": 4,
+   "attack": [
+    5,
+    3
+   ],
+   "defense": [
+    4,
+    2
+   ],
+   "movement": [
+    4,
+    4
+   ],
+   "q": 3,
+   "r": 1
+  },
+  {
+   "id": "2 Alpini",
+   "faction": "ENTENTE",
+   "rank": "REGIMENT",
+   "morale": 4,
+   "attack": [
+    5,
+    3
+   ],
+   "defense": [
+    4,
+    2
+   ],
+   "movement": [
+    4,
+    4
+   ],
+   "q": 3,
+   "r": 2
+  },
+  {
+   "id": "23 DI",
+   "faction": "ENTENTE",
+   "rank": "DIVISION",
+   "morale": 4,
+   "attack": [
+    9,
+    4
+   ],
+   "defense": [
+    11,
+    5
+   ],
+   "movement": [
+    4,
+    4
+   ],
+   "q": 4,
+   "r": 1
+  }
+ ],
+ "reinforcements": [
+  {
+   "turn": 17,
+   "sequence": 2,
+   "unit": {
+    "id": "50 ID AH",
+    "faction": "CENTRAL",
+    "rank": "DIVISION",
+    "morale": 4,
+    "attack": [
+     9,
+     4
+    ],
+    "defense": [
+     9,
+     5
+    ],
+    "movement": [
+     4,
+     4
+    ],
+    "q": 0,
+    "r": 0
+   }
+  }
+ ]
 }

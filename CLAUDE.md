@@ -23,30 +23,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Run a single test class
 ./mvnw test -Dtest=GameApplicationTests
 
-# Run the app
+# Play the game in the terminal (hot-seat, type 'help' in game)
+./mvnw -q spring-boot:run -Dspring-boot.run.main-class=com.arms.game.cli.GameCli
+# Optional scenario name from src/main/resources/scenarios: append  -Dspring-boot.run.arguments=montegrappa
+
+# Run the Spring app (no web endpoints yet)
 ./mvnw spring-boot:run
 ```
 
 ## Architecture
 
-**Stack:** Java 21, Spring Boot 4.0, Lombok, Maven. Currently no persistence layer — all state is in-memory.
+**Stack:** Java 21, Spring Boot 4.0 (Jackson 3, `tools.jackson`), Lombok, Maven. All state is in-memory. The CLI (`cli/GameCli`) does not use Spring.
 
-**Domain model — the two-sided token:**
-Units (`Unit.java`) model physical cardboard counters that have a front side (full strength) and a back side (step loss). This is why attack/defense/movement are all `Pair<Integer, Integer>` — index 0 is full strength, index 1 is reduced. `AttackUnit` is the one concrete subclass so far.
+**Placeholder data:** rules and numbers that were not in the rulebook photos are marked INFERRED in code and in `montegrappa.json`. Known inferred pieces: the CRT grid (`combat/CRT`), terrain movement costs, unit step counts, most Tactical Coordination modifiers, the Monte Grappa map and setup, the VP threshold. `docs/rules-summary.md` has the rules as read from the photos, with [verify] flags.
 
-**Game lifecycle:**
-`GameBuilder` → `GameService` → `Game`. The builder validates player count (exactly 2), accepts a scenario map via `addScenario()`, and produces a `Game`. `GameService` is the Spring-managed singleton that holds the active game. `startGame()` builds the `Game` from the loaded map (it NPEs if no scenario was added).
+**Game lifecycle:** `GameBuilder` (players + scenario) -> `Game`. `GameService` is the Spring singleton holding the active game. Scenario JSON in `src/main/resources/scenarios/` is read into `ScenarioDefinition` DTOs by `MapLoader`, which builds the `GameMap`. Tests use `src/test/resources/scenarios/skirmish.json` so tuning the real scenario does not break them. Optional JSON booleans must be `Boolean` (Jackson 3 rejects missing primitives).
 
-**Turn structure:**
-`GameState` is a sealed interface permitting: `Start`, `Administrative`, `Movement`, `Disengagement`, `Exploitation`, `Operation`, `Weather`, `GameOver`. These map to the physical game's turn sequence. `Game.processState()` is the intended dispatch point but is unimplemented (TODO).
+**Turn structure:** `GameState` is a sealed interface; each state implements `advance(Game)` and returns the next state: Start -> Administrative -> Operation -> Weather -> [Movement -> Combat -> Disengagement -> Exploitation] for the initiative player, then the same for the other player -> next Operation / Administrative / GameOver. `Game` holds turn, sequence and phasing faction. Weather, Disengagement and Exploitation actions are not implemented (they pass through; Exploitation runs Marker Adjustment). Overstacking blocks the end of Movement/Combat/Exploitation until fixed with `Game.eliminateUnits`.
 
-**Map:**
-`GameMap` is a Jackson-loaded class (name, grid size, initiative faction, start date, `hexMap`). Scenario JSON currently lives in `src/main/java/.../scenarios` (should move to resources) and is mostly empty. Each `Hex` holds a `HexCoordinate` (cube coordinates: q, r, s) and a `Terrain` enum, plus a list of `Unit`s currently in that hex.
+**Map and units:** `GameMap` holds `Hex` objects (cube `HexCoordinate`, terrain, trench flag, units), objective hexes, offensive turns, reinforcements and the VP threshold. `Unit` has two-sided stats (`Pair` front/back), morale, steps, and Disorganized/Reorganizing/Exploitation markers. Stacking limits live on `Unit.stackingValue()` and `Hex.isOverstacked()`.
 
-**Units on the map:**
-`UnitStack` represents multiple units stacked in the same hex and is where `move()` and `attack()` will live. `move()` only checks distance; `attack()` is a TODO.
+**Rules code:** `rules/MovementRules` (ZoC, MP costs, reachable hexes, move), `rules/Victory`, `combat/CombatResolver` (odds, CRT, Tactical Coordination, retreat, advance), `combat/HitPoints` (HP -> step losses/Disorganisation), `combat/CRT`, `combat/Coordination`. `Game.attack()` enforces Combat-phase rules; `Game.setDice()` makes tests deterministic.
 
-**Combat:**
-`CRT` (Combat Results Table) is a stub — the table is placeholder data and the index math is wrong (2d6 sum vs 11 rows, integer division on ratios). Needs the real table from the rules.
+**Not implemented yet:** supply, weather rolls, Disengagement, Exploitation movement/combat, Assault Troops, artillery, tanks, rivers/roads/crest lines, Misunderstood Orders effects, Strategic Victory, Spring/REST layer.
 
-**Factions:** `ENTENTE`/`CENTRAL`, with nested `Entente` (FRANCE, ITALY) and `Central` (GERMANY, AUSTRIA) enums (WWI Italian front).
+**Factions:** `ENTENTE`/`CENTRAL` (nested `Entente`: FRANCE, ITALY; `Central`: GERMANY, AUSTRIA).

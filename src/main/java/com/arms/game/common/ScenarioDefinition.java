@@ -18,12 +18,18 @@ public record ScenarioDefinition(
         List<HexDef> hexes,
         List<CoordDef> objectives,
         List<Integer> offensiveTurns,
-        List<UnitDef> units) {
+        Integer vpThreshold,
+        List<UnitDef> units,
+        List<ReinforcementDef> reinforcements) {
 
     public record CoordDef(int q, int r) {
     }
 
     public record HexDef(int q, int r, Hex.Terrain terrain, Boolean trench) {
+    }
+
+    /** The unit's q and r are the hex where it arrives. */
+    public record ReinforcementDef(int turn, int sequence, UnitDef unit) {
     }
 
     public record UnitDef(

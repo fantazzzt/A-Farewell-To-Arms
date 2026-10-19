@@ -22,7 +22,7 @@ class GameFlowTests {
         game = GameBuilder.initializeGame()
                 .addPlayer(new Player(true, "Caden", Faction.CENTRAL))
                 .addPlayer(new Player(false, "Opponent", Faction.ENTENTE))
-                .addScenario("montegrappa")
+                .addScenario("skirmish")
                 .startGame();
     }
 

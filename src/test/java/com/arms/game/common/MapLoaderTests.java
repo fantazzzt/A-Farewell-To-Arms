@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class MapLoaderTests {
 
     @Test
-    void loadsMonteGrappa() throws IOException {
-        GameMap map = MapLoader.readGameMap("montegrappa");
+    void loadsSkirmish() throws IOException {
+        GameMap map = MapLoader.readGameMap("skirmish");
 
         assertEquals(Faction.CENTRAL, map.getInitiativeFaction());
         assertEquals(17, map.getFirstTurn());

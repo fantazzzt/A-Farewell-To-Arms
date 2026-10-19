@@ -13,10 +13,12 @@ import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
 import com.arms.game.models.map.Hex;
 import com.arms.game.models.map.HexCoordinate;
+import com.arms.game.models.map.Reinforcement;
 import com.arms.game.models.squares.Unit;
 import com.arms.game.rules.MovementRules;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +47,7 @@ public class Game {
     private Faction phasingFaction;
     private final Set<HexCoordinate> attackedHexes = new HashSet<>();
     private IntSupplier dice = Dice::roll;
+    private final List<String> events = new ArrayList<>();
 
     public Game(List<Player> players, GameMap gameMap) {
         this.players = players;
@@ -146,6 +149,15 @@ public class Game {
 
     public void declareOffensive() {
         sequencesThisTurn = SEQUENCES_WITH_OFFENSIVE;
+        events.add(gameMap.getInitiativeFaction() + " declares an Offensive: " + SEQUENCES_WITH_OFFENSIVE
+                + " Operational Sequences this turn.");
+    }
+
+    /** Things that happened on their own (reinforcements, offensives) since the last call, for display. */
+    public List<String> drainEvents() {
+        List<String> drained = List.copyOf(events);
+        events.clear();
+        return drained;
     }
 
     public void beginSequence() {
@@ -193,8 +205,14 @@ public class Game {
                 .filter(unit -> unit.faction == phasingFaction);
     }
 
-    /** Units of the player about to move have not moved yet. */
-    public void resetMovement() {
+    /** Units of the player about to move have not moved yet, and any reinforcements due now arrive. */
+    public void beginMovementPhase() {
         phasingUnits().forEach(unit -> unit.hasMoved = false);
+        for (Reinforcement r : gameMap.getReinforcements()) {
+            if (r.turn() == currentTurn && r.sequence() == sequence && r.unit().faction == phasingFaction) {
+                gameMap.getHex(r.at()).getUnits().add(r.unit());
+                events.add(r.unit().id + " arrives at " + r.at().q() + "," + r.at().r() + ".");
+            }
+        }
     }
 }

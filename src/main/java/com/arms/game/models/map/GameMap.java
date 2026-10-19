@@ -23,10 +23,15 @@ public class GameMap {
     /** Turns on which the initiative player must declare an Offensive. */
     @Getter
     private final List<Integer> offensiveTurns;
+    /** Victory Points the CP must beat for a Tactical Victory (see Victory). */
+    @Getter
+    private final int vpThreshold;
+    @Getter
+    private final List<Reinforcement> reinforcements;
 
     public GameMap(String nameOfMap, Faction initiativeFaction, int firstTurn, int lastTurn,
                    Map<HexCoordinate, Hex> hexMap, List<HexCoordinate> objectiveHexes,
-                   List<Integer> offensiveTurns) {
+                   List<Integer> offensiveTurns, int vpThreshold, List<Reinforcement> reinforcements) {
         this.nameOfMap = nameOfMap;
         this.initiativeFaction = initiativeFaction;
         this.firstTurn = firstTurn;
@@ -34,6 +39,8 @@ public class GameMap {
         this.hexMap = hexMap;
         this.objectiveHexes = objectiveHexes;
         this.offensiveTurns = offensiveTurns;
+        this.vpThreshold = vpThreshold;
+        this.reinforcements = reinforcements;
     }
 
     public Hex hexOf(Unit unit) {
