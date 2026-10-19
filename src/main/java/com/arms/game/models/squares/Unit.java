@@ -30,6 +30,24 @@ public abstract class Unit {
         this.movement = movement;
     }
 
+    public boolean isCombatUnit() {
+        return rank != UnitRank.SUPPORT && rank != UnitRank.HQ;
+    }
+
+    /** Movement allowance of whichever side of the counter is face up. */
+    public int currentMovement() {
+        return stepLoss ? movement.second() : movement.first();
+    }
+
+    /** Points this unit uses up in a hex. A full division is 3, a reduced one 2. Detachments and supports use none. */
+    public int stackingValue() {
+        return switch (rank) {
+            case DIVISION -> stepLoss ? 2 : 3;
+            case REGIMENT, BRIGADE -> 1;
+            case DETACHMENT, SUPPORT, HQ -> 0;
+        };
+    }
+
     public enum UnitRank {
         DETACHMENT(0), REGIMENT(1), BRIGADE(2), DIVISION(3), SUPPORT(4), HQ(5);
 
