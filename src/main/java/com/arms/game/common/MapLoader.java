@@ -58,7 +58,8 @@ public class MapLoader {
         List<HexCoordinate> objectives = def.objectives().stream()
                 .map(o -> HexCoordinate.of(o.q(), o.r()))
                 .toList();
-        return new GameMap(def.name(), def.initiative(), def.firstTurn(), def.lastTurn(), hexes, objectives);
+        return new GameMap(def.name(), def.initiative(), def.firstTurn(), def.lastTurn(), hexes, objectives,
+                def.offensiveTurns() == null ? List.of() : def.offensiveTurns());
     }
 
     private static Unit toUnit(ScenarioDefinition.UnitDef u) {

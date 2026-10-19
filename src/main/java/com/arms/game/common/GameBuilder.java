@@ -1,6 +1,5 @@
 package com.arms.game.common;
 
-import com.arms.game.common.state.Administrative;
 import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
 import lombok.NonNull;
@@ -63,6 +62,6 @@ public class GameBuilder {
         if (gameMap == null) {
             throw new IllegalStateException("No scenario loaded! Call addScenario() first");
         }
-        return new Game(playerList, gameMap.getFirstTurn(), 0, new Administrative(), gameMap);
+        return new Game(playerList, gameMap);
     }
 }

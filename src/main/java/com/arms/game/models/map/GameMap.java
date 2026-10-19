@@ -19,15 +19,20 @@ public class GameMap {
     private final Map<HexCoordinate, Hex> hexMap;
     @Getter
     private final List<HexCoordinate> objectiveHexes;
+    /** Turns on which the initiative player must declare an Offensive. */
+    @Getter
+    private final List<Integer> offensiveTurns;
 
     public GameMap(String nameOfMap, Faction initiativeFaction, int firstTurn, int lastTurn,
-                   Map<HexCoordinate, Hex> hexMap, List<HexCoordinate> objectiveHexes) {
+                   Map<HexCoordinate, Hex> hexMap, List<HexCoordinate> objectiveHexes,
+                   List<Integer> offensiveTurns) {
         this.nameOfMap = nameOfMap;
         this.initiativeFaction = initiativeFaction;
         this.firstTurn = firstTurn;
         this.lastTurn = lastTurn;
         this.hexMap = hexMap;
         this.objectiveHexes = objectiveHexes;
+        this.offensiveTurns = offensiveTurns;
     }
 
     public Hex getHex(HexCoordinate coordinate) {

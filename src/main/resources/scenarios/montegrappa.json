@@ -4,6 +4,7 @@
   "initiative": "CENTRAL",
   "firstTurn": 17,
   "lastTurn": 18,
+  "offensiveTurns": [17],
   "hexes": [
     {"q": 0, "r": 0, "terrain": "CLEAR"},
     {"q": 1, "r": 0, "terrain": "CLEAR"},

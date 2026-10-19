@@ -17,6 +17,7 @@ public record ScenarioDefinition(
         int lastTurn,
         List<HexDef> hexes,
         List<CoordDef> objectives,
+        List<Integer> offensiveTurns,
         List<UnitDef> units) {
 
     public record CoordDef(int q, int r) {
