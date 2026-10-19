@@ -5,14 +5,13 @@ import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
 import lombok.AllArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
 public class Game {
 
     private final List<Player> players;
-    private Date currentDay;
+    private int currentTurn;
     private int operation;
     private GameState gameState;
     private GameMap gameMap;

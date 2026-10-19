@@ -60,6 +60,9 @@ public class GameBuilder {
         if (playerList.size() < MIN_NUM_PLAYERS) {
             throw new IllegalStateException("Not enough players in the game! Need at least " + MIN_NUM_PLAYERS + "players");
         }
-        return new Game(playerList, gameMap.getOperationStartingDay(), 0, new Administrative(), gameMap);
+        if (gameMap == null) {
+            throw new IllegalStateException("No scenario loaded! Call addScenario() first");
+        }
+        return new Game(playerList, gameMap.getFirstTurn(), 0, new Administrative(), gameMap);
     }
 }

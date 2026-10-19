@@ -2,29 +2,35 @@ package com.arms.game.models.map;
 
 import com.arms.game.models.Faction;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameMap {
     @Getter
-    @Setter
-    private Faction initiativeFaction;
+    private final String nameOfMap;
     @Getter
-    @Setter
-    private String nameOfMap;
+    private final Faction initiativeFaction;
     @Getter
-    @Setter
-    private int totalGridSize;
+    private final int firstTurn;
     @Getter
-    @Setter
-    private HashMap<HexCoordinate, Hex> hexMap;
+    private final int lastTurn;
     @Getter
-    @Setter
-    private Date operationStartingDay;
+    private final Map<HexCoordinate, Hex> hexMap;
+    @Getter
+    private final List<HexCoordinate> objectiveHexes;
 
+    public GameMap(String nameOfMap, Faction initiativeFaction, int firstTurn, int lastTurn,
+                   Map<HexCoordinate, Hex> hexMap, List<HexCoordinate> objectiveHexes) {
+        this.nameOfMap = nameOfMap;
+        this.initiativeFaction = initiativeFaction;
+        this.firstTurn = firstTurn;
+        this.lastTurn = lastTurn;
+        this.hexMap = hexMap;
+        this.objectiveHexes = objectiveHexes;
+    }
 
-    public GameMap() {
+    public Hex getHex(HexCoordinate coordinate) {
+        return hexMap.get(coordinate);
     }
 }
