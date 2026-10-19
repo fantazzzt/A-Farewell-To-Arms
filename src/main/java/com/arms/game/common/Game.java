@@ -1,8 +1,13 @@
 package com.arms.game.common;
 
+import com.arms.game.combat.CombatDecisions;
+import com.arms.game.combat.CombatReport;
+import com.arms.game.combat.CombatResolver;
+import com.arms.game.common.state.Combat;
 import com.arms.game.common.state.GameState;
 import com.arms.game.common.state.Movement;
 import com.arms.game.common.state.Start;
+import com.arms.game.models.Dice;
 import com.arms.game.models.Faction;
 import com.arms.game.models.Player;
 import com.arms.game.models.map.GameMap;
@@ -12,7 +17,10 @@ import com.arms.game.models.squares.Unit;
 import com.arms.game.rules.MovementRules;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.IntSupplier;
 
 public class Game {
 
@@ -35,6 +43,8 @@ public class Game {
     private int sequencesThisTurn = SEQUENCES_WITHOUT_OFFENSIVE;
     @Getter
     private Faction phasingFaction;
+    private final Set<HexCoordinate> attackedHexes = new HashSet<>();
+    private IntSupplier dice = Dice::roll;
 
     public Game(List<Player> players, GameMap gameMap) {
         this.players = players;
@@ -55,6 +65,64 @@ public class Game {
             throw new IllegalArgumentException("Only " + phasingFaction + " units can move now");
         }
         MovementRules.move(gameMap, from, units, to);
+    }
+
+    /** Lets tests (or a UI with physical dice) supply the rolls. */
+    public void setDice(IntSupplier dice) {
+        this.dice = dice;
+    }
+
+    public CombatReport attack(HexCoordinate target, List<Unit> attackers) {
+        return attack(target, attackers, CombatDecisions.AUTO);
+    }
+
+    /**
+     * Attacks one hex with units from adjacent hexes. A hex can be attacked once per Combat phase and each unit
+     * attacks once (rulebook 12.0).
+     */
+    public CombatReport attack(HexCoordinate target, List<Unit> attackers, CombatDecisions decisions) {
+        if (!(gameState instanceof Combat)) {
+            throw new IllegalStateException("Units can only attack during the Combat phase, not " + gameState.phaseName());
+        }
+        Hex defendHex = gameMap.getHex(target);
+        if (defendHex == null) {
+            throw new IllegalArgumentException("No hex at " + target);
+        }
+        if (attackers.isEmpty()) {
+            throw new IllegalArgumentException("No attacking units");
+        }
+        for (Unit unit : attackers) {
+            Hex from = gameMap.hexOf(unit);
+            if (unit.faction != phasingFaction || !unit.isCombatUnit() || from == null) {
+                throw new IllegalArgumentException(unit.id + " cannot attack now");
+            }
+            if (unit.isDisorganized()) {
+                throw new IllegalArgumentException(unit.id + " is Disorganized and cannot attack");
+            }
+            if (unit.hasAttacked) {
+                throw new IllegalStateException(unit.id + " has already attacked this phase");
+            }
+            if (from.getCdn().distanceTo(target) != 1) {
+                throw new IllegalArgumentException(unit.id + " is not adjacent to " + target);
+            }
+        }
+        if (!defendHex.hasCombatUnitOf(phasingFaction.opponent())) {
+            throw new IllegalArgumentException("No enemy combat units at " + target);
+        }
+        if (!attackedHexes.add(target)) {
+            throw new IllegalStateException(target + " has already been attacked this phase");
+        }
+        attackers.forEach(u -> u.hasAttacked = true);
+        return CombatResolver.resolve(gameMap, target, attackers, dice, decisions);
+    }
+
+    /** Owner's choice of which units to lose when a hex is overstacked. */
+    public void eliminateUnits(HexCoordinate at, List<Unit> units) {
+        Hex hex = gameMap.getHex(at);
+        if (hex == null || !hex.getUnits().containsAll(units)) {
+            throw new IllegalArgumentException("Those units are not at " + at);
+        }
+        hex.getUnits().removeAll(units);
     }
 
     /** The end of a phase cannot be reached while any hex is overstacked (rulebook 4.0). */
@@ -89,11 +157,44 @@ public class Game {
         phasingFaction = phasingFaction.opponent();
     }
 
+    public void beginCombatPhase() {
+        attackedHexes.clear();
+        phasingUnits().forEach(unit -> unit.hasAttacked = false);
+    }
+
+    /**
+     * Marker Adjustment (rulebook 14.3), applied to both sides' units: Reorganizing units outside an enemy ZoC
+     * recover, Disorganized units become Reorganizing and Exploitation markers are removed.
+     */
+    public void adjustMarkers() {
+        for (Faction faction : Faction.values()) {
+            Set<HexCoordinate> enemyZoc = MovementRules.zoneOfControl(gameMap, faction.opponent());
+            for (Hex hex : gameMap.getHexMap().values()) {
+                for (Unit unit : hex.getUnits()) {
+                    if (unit.faction != faction) {
+                        continue;
+                    }
+                    if (unit.reorganizing && !enemyZoc.contains(hex.getCdn())) {
+                        unit.reorganizing = false;
+                    }
+                    if (unit.disorganized) {
+                        unit.disorganized = false;
+                        unit.reorganizing = true;
+                    }
+                    unit.exploitation = false;
+                }
+            }
+        }
+    }
+
+    private java.util.stream.Stream<Unit> phasingUnits() {
+        return gameMap.getHexMap().values().stream()
+                .flatMap(hex -> hex.getUnits().stream())
+                .filter(unit -> unit.faction == phasingFaction);
+    }
+
     /** Units of the player about to move have not moved yet. */
     public void resetMovement() {
-        gameMap.getHexMap().values().stream()
-                .flatMap(hex -> hex.getUnits().stream())
-                .filter(unit -> unit.faction == phasingFaction)
-                .forEach(unit -> unit.hasMoved = false);
+        phasingUnits().forEach(unit -> unit.hasMoved = false);
     }
 }

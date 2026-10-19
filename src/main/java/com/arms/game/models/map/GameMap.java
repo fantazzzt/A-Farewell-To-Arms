@@ -1,6 +1,7 @@
 package com.arms.game.models.map;
 
 import com.arms.game.models.Faction;
+import com.arms.game.models.squares.Unit;
 import lombok.Getter;
 
 import java.util.List;
@@ -33,6 +34,10 @@ public class GameMap {
         this.hexMap = hexMap;
         this.objectiveHexes = objectiveHexes;
         this.offensiveTurns = offensiveTurns;
+    }
+
+    public Hex hexOf(Unit unit) {
+        return hexMap.values().stream().filter(h -> h.getUnits().contains(unit)).findFirst().orElse(null);
     }
 
     public Hex getHex(HexCoordinate coordinate) {

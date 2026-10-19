@@ -6,6 +6,7 @@ public final class Movement implements GameState {
     @Override
     public GameState advance(Game game) {
         game.requireNoOverstacking();
+        game.beginCombatPhase();
         return new Combat();
     }
 }
